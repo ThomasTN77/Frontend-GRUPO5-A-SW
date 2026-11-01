@@ -1,0 +1,71 @@
+<div class="bienvenida">
+  <div class="hero">
+    <div class="hero-tag">Panel Principal</div>
+    <h2>Front Grupo 5</h2>
+    <p class="subtitulo">
+      Aplicación Web desarrollada con <strong>Angular</strong> y <strong>FastAPI</strong> para la materia de <strong>Aplicaciones y Servicios</strong>.
+    </p>
+  </div>
+
+  <div class="seccion-modulos">
+    <h3>Módulos del Sistema</h3>
+    <div class="grid-tarjetas">
+      <div class="tarjeta-modulo activa">
+        <div class="tarjeta-cabecera">
+          <h4>🐾 Animales</h4>
+          <span class="badge online">Conectado</span>
+        </div>
+        <p class="responsable">A cargo de: <strong>Thomas</strong></p>
+        <p class="descripcion">
+          Gestión completa (CRUD) de animales con persistencia en base de datos, búsqueda por UUID, edición y eliminación.
+        </p>
+        <a routerLink="/animales" class="btn-acceso">Ingresar al módulo &rarr;</a>
+      </div>
+
+      <div class="tarjeta-modulo">
+        <div class="tarjeta-cabecera">
+          <h4>🏍️ Motos</h4>
+          <span class="badge pendiente">Pendiente API</span>
+        </div>
+        <p class="responsable">A cargo de: <strong>Juanda</strong></p>
+        <p class="descripcion">
+          Módulo preparado en la interfaz para conectar con los endpoints de gestión de motocicletas.
+        </p>
+        <a routerLink="/motos" class="btn-acceso secundario">Ver módulo &rarr;</a>
+      </div>
+
+      <div class="tarjeta-modulo">
+        <div class="tarjeta-cabecera">
+          <h4>📚 Libros</h4>
+          <span class="badge pendiente">Pendiente API</span>
+        </div>
+        <p class="responsable">A cargo de: <strong>Mauricio</strong></p>
+        <p class="descripcion">
+          Módulo preparado en la interfaz para conectar con el catálogo y gestión de libros.
+        </p>
+        <a routerLink="/libros" class="btn-acceso secundario">Ver módulo &rarr;</a>
+      </div>
+
+      <div class="tarjeta-modulo">
+        <div class="tarjeta-cabecera">
+          <h4>🎮 Videojuegos</h4>
+          <span class="badge pendiente">Pendiente API</span>
+        </div>
+        <p class="responsable">A cargo de: <strong>María</strong></p>
+        <p class="descripcion">
+          Módulo preparado en la interfaz para conectar con el catálogo y registro de videojuegos.
+        </p>
+        <a routerLink="/videojuegos" class="btn-acceso secundario">Ver módulo &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-tecnica">
+    <h3>Arquitectura y Tecnologías</h3>
+    <ul>
+      <li><strong>Frontend:</strong> Angular (Componentes Standalone, Signals reactivas, Router y HttpClient).</li>
+      <li><strong>Backend:</strong> Python FastAPI, SQLAlchemy, validación con Pydantic y CORS habilitado.</li>
+      <li><strong>Estandarización:</strong> Interfaz alineada al diseño del profesor con Layout Shell y estilos CSS globales.</li>
+    </ul>
+  </div>
+</div>
