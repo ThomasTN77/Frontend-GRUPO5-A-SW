@@ -1,0 +1,150 @@
+<div class="container">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Módulo de Videojuegos</h1>
+    </div>
+    <div class="header-badges">
+      <div class="header-badge" [class.badge-success]="conectado" [class.badge-danger]="!conectado && errorMessage">
+        <span class="badge-dot"></span>
+        <span>{{ conectado ? 'Conectado' : (errorMessage ? 'Sin conexión' : 'Verificando...') }}</span>
+      </div>
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        <span>CRUD FastAPI + Angular</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Alerta de Error de Conexión -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-content">
+      <strong>Conexión fallida</strong>
+      <p>{{ errorMessage }}</p>
+    </div>
+  </div>
+
+  <!-- Formulario de Crear / Editar -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-header-content">
+        <h2 class="card-title">{{ editando ? 'Editar videojuego' : 'Agregar nuevo videojuego' }}</h2>
+        <p class="card-subtitle">{{ editando ? 'Actualiza los datos del registro seleccionado' : 'Completa el formulario para registrar un nuevo juego' }}</p>
+      </div>
+      <span class="card-badge">{{ editando ? 'Modo edición' : 'Nuevo registro' }}</span>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="guardar()" class="form-grid">
+        <div class="form-group">
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" [(ngModel)]="videojuegoForm.titulo" name="titulo" class="form-control" placeholder="Ej. The Legend of Zelda" required>
+        </div>
+
+        <div class="form-group">
+          <label for="plataforma">Plataforma</label>
+          <input type="text" id="plataforma" [(ngModel)]="videojuegoForm.plataforma" name="plataforma" class="form-control" placeholder="Ej. Nintendo Switch, PC, PS5" required>
+        </div>
+
+        <div class="form-group">
+          <label for="genero">Género</label>
+          <input type="text" id="genero" [(ngModel)]="videojuegoForm.genero" name="genero" class="form-control" placeholder="Ej. RPG, Acción, Aventura" required>
+        </div>
+
+        <div class="form-group">
+          <label for="precio">Precio ($)</label>
+          <div class="input-with-icon">
+            <span class="input-icon">$</span>
+            <input type="number" step="0.01" min="0" id="precio" [(ngModel)]="videojuegoForm.precio" name="precio" class="form-control has-icon" placeholder="0.00" required>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-icon">{{ editando ? '💾' : '➕' }}</span>
+            {{ editando ? 'Actualizar videojuego' : 'Guardar videojuego' }}
+          </button>
+          <button type="button" *ngIf="editando" (click)="cancelarEdicion()" class="btn btn-ghost">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Tabla de Datos -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-header-content">
+        <h2 class="card-title">Lista de videojuegos registrados</h2>
+        <p class="card-subtitle" *ngIf="!modoBusqueda">
+          Total: {{ videojuegos.length }} {{ videojuegos.length === 1 ? 'registro' : 'registros' }}
+        </p>
+        <p class="card-subtitle" *ngIf="modoBusqueda">
+          Resultado de búsqueda por ID
+        </p>
+      </div>
+      <div class="search-box">
+        <form (ngSubmit)="buscarPorId()" class="search-form">
+          <input
+            type="text"
+            [(ngModel)]="searchId"
+            name="searchId"
+            class="search-input"
+            placeholder="Buscar por ID (UUID)"
+            autocomplete="off"
+          />
+          <button type="submit" class="btn btn-primary btn-small">Buscar</button>
+          <button type="button" class="btn btn-ghost btn-small" (click)="limpiarBusqueda()" *ngIf="modoBusqueda || searchId">
+            Todos
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="card-body card-body-no-padding">
+      <div class="table-wrapper" *ngIf="(modoBusqueda ? videojuegosFiltrados.length : videojuegos.length) > 0">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Plataforma</th>
+              <th>Género</th>
+              <th>Precio</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let juego of (modoBusqueda ? videojuegosFiltrados : videojuegos)">
+              <td><span class="id-pill">#{{ juego.id }}</span></td>
+              <td class="cell-title">{{ juego.titulo }}</td>
+              <td>{{ juego.plataforma }}</td>
+              <td><span class="genre-pill">{{ juego.genero }}</span></td>
+              <td class="cell-price">${{ juego.precio | number:'1.2-2' }}</td>
+              <td class="actions-cell">
+                <button (click)="seleccionarParaEditar(juego)" class="btn btn-icon-only btn-warning" title="Editar">
+                  ✏️
+                </button>
+                <button (click)="eliminar(juego.id!)" class="btn btn-icon-only btn-danger" title="Eliminar">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="empty-state" *ngIf="!modoBusqueda && videojuegos.length === 0">
+        <div class="empty-icon">🎮</div>
+        <h3>Sin videojuegos registrados</h3>
+        <p>Aún no hay registros en la base de datos. Usa el formulario de arriba para agregar el primero.</p>
+      </div>
+
+      <div class="empty-state" *ngIf="modoBusqueda && videojuegosFiltrados.length === 0">
+        <div class="empty-icon">🔍</div>
+        <h3>No se encontraron resultados</h3>
+        <p>{{ errorMessage || 'No hay ningún videojuego con ese ID.' }}</p>
+        <button class="btn btn-primary" (click)="limpiarBusqueda()">Ver todos los registros</button>
+      </div>
+    </div>
+  </section>
+</div>

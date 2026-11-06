@@ -4,6 +4,7 @@ import { Shell } from './layout/shell/shell';
 import { Animales } from './pages/animales/animales';
 import { Inicio } from './pages/inicio/inicio';
 import { Placeholder } from './pages/placeholder/placeholder';
+import { VideojuegosComponent } from './pages/videojuegos/videojuegos.component';
 
 export const routes: Routes = [
   {
@@ -25,7 +26,7 @@ export const routes: Routes = [
       },
       {
         path: 'videojuegos',
-        component: Placeholder,
+        component: VideojuegosComponent,
         data: { entidad: 'Videojuegos', responsable: 'María' },
       },
     ],
