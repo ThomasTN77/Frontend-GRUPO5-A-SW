@@ -64,3 +64,34 @@ Para la entidad **Animales**, se implementaron las 5 operaciones HTTP requeridas
 | **Eliminar** | `DELETE` | `/animales/{id}` | Elimina el registro de la base de datos tras confirmación del usuario. |
 
 En caso de que el backend no esté encendido o no responda, el frontend muestra una notificación de error de conexión en lugar de presentar datos simulados.
+
+---
+
+## 5. Módulo Libros (Mauricio)
+
+### Video de evidencia
+
+Llamados a los endpoints vistos en el panel Network del navegador: PEGAR_AQUI_EL_LINK_DEL_VIDEO
+
+### Backend
+
+- **URL Base de la API:** `http://127.0.0.1:8001` (variable `librosApiUrl` en `src/environments/environment.ts`)
+- **Recurso:** `http://127.0.0.1:8001/libros`
+- **Swagger:** `http://127.0.0.1:8001/docs`
+- Código en la carpeta `Mauricio` de [Ejemplos-API-grupo5](https://github.com/ThomasTN77/Ejemplos-API-grupo5). Se levanta con:
+
+```bash
+uvicorn main:app --reload --port 8001
+```
+
+Usa el puerto 8001 para poder correr al mismo tiempo que la API de animales (8000). Tiene CORS habilitado para `http://localhost:4200`.
+
+### Operaciones
+
+| Operación | Método HTTP | Endpoint | Descripción |
+| :--- | :---: | :--- | :--- |
+| **Listar la colección** | `GET` | `/libros` | Lista todos los libros en la tabla. |
+| **Consultar uno por ID** | `GET` | `/libros/{id}` | Filtra por ID numérico. Si no existe muestra "Libro no encontrado". |
+| **Crear** | `POST` | `/libros` | Popup para registrar título, autor, año y disponibilidad. |
+| **Editar** | `PUT` | `/libros/{id}` | Edita un libro existente y recarga la tabla desde la API. |
+| **Eliminar** | `DELETE` | `/libros/{id}` | Elimina el libro tras confirmación. |
