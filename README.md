@@ -71,20 +71,44 @@ En caso de que el backend no esté encendido o no responda, el frontend muestra 
 
 ### Video de evidencia
 
-Llamados a los endpoints vistos en el panel Network del navegador: PEGAR_AQUI_EL_LINK_DEL_VIDEO
+Llamados a los endpoints vistos en el panel Network del navegador: https://youtu.be/EM0t8e9c9_I
 
 ### Backend
 
 - **URL Base de la API:** `http://127.0.0.1:8001` (variable `librosApiUrl` en `src/environments/environment.ts`)
 - **Recurso:** `http://127.0.0.1:8001/libros`
-- **Swagger:** `http://127.0.0.1:8001/docs`
-- Código en la carpeta `Mauricio` de [Ejemplos-API-grupo5](https://github.com/ThomasTN77/Ejemplos-API-grupo5). Se levanta con:
+- **Documentación Swagger:** `http://127.0.0.1:8001/docs`
+- Usa el puerto **8001** para poder correr al mismo tiempo que la API de animales (8000).
+- Tiene CORS habilitado para `http://localhost:4200`.
 
-```bash
-uvicorn main:app --reload --port 8001
-```
+### Cómo levantar el backend de libros
 
-Usa el puerto 8001 para poder correr al mismo tiempo que la API de animales (8000). Tiene CORS habilitado para `http://localhost:4200`.
+El código está en la carpeta `Mauricio` del repositorio [Ejemplos-API-grupo5](https://github.com/ThomasTN77/Ejemplos-API-grupo5).
+
+1. **Clonar y entrar a la carpeta:**
+   ```bash
+   git clone https://github.com/ThomasTN77/Ejemplos-API-grupo5.git
+   cd Ejemplos-API-grupo5/Mauricio
+   ```
+
+2. **Crear el entorno virtual e instalar dependencias:**
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\python -m pip install -r requirements.txt
+   ```
+
+3. **Configurar la base de datos:** crear un archivo `.env` en la carpeta `Mauricio` (ver `.env.example`) con la cadena de conexión de PostgreSQL (Neon):
+   ```
+   DATABASE_URL=postgresql://usuario:contrasena@host/neondb?sslmode=require
+   ```
+
+4. **Correr la API en el puerto 8001:**
+   ```bash
+   .venv\Scripts\python -m uvicorn main:app --reload --port 8001
+   ```
+   Debe aparecer `Uvicorn running on http://127.0.0.1:8001`.
+
+5. **Levantar el frontend** (sección 3) y entrar a **Libros** en el sidebar.
 
 ### Operaciones
 
@@ -95,3 +119,5 @@ Usa el puerto 8001 para poder correr al mismo tiempo que la API de animales (800
 | **Crear** | `POST` | `/libros` | Popup para registrar título, autor, año y disponibilidad. |
 | **Editar** | `PUT` | `/libros/{id}` | Edita un libro existente y recarga la tabla desde la API. |
 | **Eliminar** | `DELETE` | `/libros/{id}` | Elimina el libro tras confirmación. |
+
+Si la API de libros no está encendida, la pantalla muestra "No se pudo conectar con la API de libros" en lugar de datos simulados.
