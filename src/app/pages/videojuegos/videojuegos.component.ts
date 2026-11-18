@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
+import { environment } from '../../../environments/environment';
+
 export interface Videojuego {
   id?: string;
   titulo: string;
@@ -19,8 +21,8 @@ export interface Videojuego {
   styleUrls: ['./videojuegos.component.css']
 })
 export class VideojuegosComponent implements OnInit {
-  // Dirección URL de la API de FastAPI
-  private apiUrl = 'http://127.0.0.1:8000/videojuegos';
+  // Dirección URL de la API de FastAPI (local o Render, según environment)
+  private apiUrl = `${environment.videojuegosApiUrl}/videojuegos`;
 
   videojuegos: Videojuego[] = [];
   videojuegoForm: Videojuego = {

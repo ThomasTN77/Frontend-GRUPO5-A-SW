@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Videojuego } from '../models/videojuego.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VideojuegosService {
-  private apiUrl = 'http://localhost:8000/videojuegos';
+  private apiUrl = `${environment.videojuegosApiUrl}/videojuegos`;
 
   constructor(private http: HttpClient) {}
 
