@@ -1,9 +1,7 @@
-// URLs base de los backends.
-// En local apuntan a 127.0.0.1; antes de desplegar en Firebase se reemplazan
-// por las URLs que asigne Render a cada servicio.
+// URLs base de los backends desplegados en Render.
 export const environment = {
-  apiUrl: 'http://127.0.0.1:8000',
-  videojuegosApiUrl: 'http://127.0.0.1:8000',
-  librosApiUrl: 'http://127.0.0.1:8001',
-  motosApiUrl: 'http://127.0.0.1:8002',
+  apiUrl: 'https://api-animales-grupo5.onrender.com',
+  videojuegosApiUrl: 'https://api-videojuegos-grupo5.onrender.com',
+  librosApiUrl: 'https://api-libros-grupo5.onrender.com',
+  motosApiUrl: 'https://api-motos-grupo5.onrender.com',
 };
