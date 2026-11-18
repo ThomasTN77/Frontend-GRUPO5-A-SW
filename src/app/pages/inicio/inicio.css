@@ -163,3 +163,36 @@
   color: #334155;
   font-size: 0.95rem;
 }
+
+@media (max-width: 768px) {
+  .tarjeta-cabecera {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 24px 20px;
+  }
+
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+
+  .hero .subtitulo {
+    font-size: 0.95rem;
+  }
+
+  .grid-tarjetas {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-modulo {
+    padding: 18px;
+  }
+
+  .info-tecnica {
+    padding: 16px;
+  }
+}
