@@ -21,6 +21,7 @@
   <p class="mensaje" [class.error]="esError()">{{ mensaje() }}</p>
 }
 
+<div class="tabla-scroll">
 <table>
   <thead>
     <tr>
@@ -48,6 +49,7 @@
     }
   </tbody>
 </table>
+</div>
 
 @if (popupAbierto()) {
   <div class="fondo-popup" (click)="cerrarPopup()">

@@ -102,6 +102,7 @@
     </div>
     <div class="card-body card-body-no-padding">
       <div class="table-wrapper" *ngIf="(modoBusqueda ? videojuegosFiltrados.length : videojuegos.length) > 0">
+        <div class="tabla-scroll">
         <table class="table">
           <thead>
             <tr>
@@ -131,6 +132,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
       <div class="empty-state" *ngIf="!modoBusqueda && videojuegos.length === 0">
