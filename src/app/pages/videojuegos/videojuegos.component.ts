@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -42,7 +42,7 @@ export class VideojuegosComponent implements OnInit {
   videojuegosFiltrados: Videojuego[] = [];
   modoBusqueda: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.obtenerVideojuegos();
@@ -55,11 +55,13 @@ export class VideojuegosComponent implements OnInit {
         this.videojuegos = data;
         this.errorMessage = '';
         this.conectado = true;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al conectar con la API:', err);
         this.errorMessage = 'Error al conectar con la API. Verifica que el backend esté encendido.';
         this.conectado = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -78,6 +80,7 @@ export class VideojuegosComponent implements OnInit {
         this.modoBusqueda = true;
         this.errorMessage = '';
         this.conectado = true;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al buscar por ID:', err);
@@ -91,6 +94,7 @@ export class VideojuegosComponent implements OnInit {
           this.errorMessage = 'Error al buscar por ID. Verifica que el backend esté encendido.';
         }
         this.conectado = err.status !== 0;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -110,16 +114,24 @@ export class VideojuegosComponent implements OnInit {
         next: () => {
           this.obtenerVideojuegos();
           this.cancelarEdicion();
+          this.cdr.markForCheck();
         },
-        error: (err) => console.error('Error al actualizar:', err)
+        error: (err) => {
+          console.error('Error al actualizar:', err);
+          this.cdr.markForCheck();
+        }
       });
     } else {
       this.http.post<Videojuego>(this.apiUrl, this.videojuegoForm).subscribe({
         next: () => {
           this.obtenerVideojuegos();
           this.limpiarFormulario();
+          this.cdr.markForCheck();
         },
-        error: (err) => console.error('Error al guardar:', err)
+        error: (err) => {
+          console.error('Error al guardar:', err);
+          this.cdr.markForCheck();
+        }
       });
     }
   }
@@ -141,8 +153,14 @@ export class VideojuegosComponent implements OnInit {
   eliminar(id: string): void {
     if (confirm('¿Estás segura de eliminar este videojuego?')) {
       this.http.delete(`${this.apiUrl}/${id}`).subscribe({
-        next: () => this.obtenerVideojuegos(),
-        error: (err) => console.error('Error al eliminar:', err)
+        next: () => {
+          this.obtenerVideojuegos();
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error('Error al eliminar:', err);
+          this.cdr.markForCheck();
+        }
       });
     }
   }
