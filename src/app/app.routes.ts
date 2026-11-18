@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { Shell } from './layout/shell/shell';
 import { Animales } from './pages/animales/animales';
 import { Inicio } from './pages/inicio/inicio';
+import { Libros } from './pages/libros/libros';
 import { Placeholder } from './pages/placeholder/placeholder';
 import { VideojuegosComponent } from './pages/videojuegos/videojuegos.component';
 
@@ -19,11 +20,7 @@ export const routes: Routes = [
         component: Placeholder,
         data: { entidad: 'Motos', responsable: 'Juanda' },
       },
-      {
-        path: 'libros',
-        component: Placeholder,
-        data: { entidad: 'Libros', responsable: 'Mauricio' },
-      },
+      { path: 'libros', component: Libros },
       {
         path: 'videojuegos',
         component: VideojuegosComponent,

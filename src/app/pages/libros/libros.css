@@ -1,0 +1,9 @@
+.campo.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.campo.check input {
+  width: auto;
+}
