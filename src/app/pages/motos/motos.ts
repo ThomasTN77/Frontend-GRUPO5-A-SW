@@ -67,7 +67,7 @@ export class Motos implements OnInit {
 
   abrirEditar(fila: Moto): void {
     this.modo.set('editar');
-    this.idEditando = fila.id ?? '';
+    this.idEditando = fila.id;
     this.formulario = {
       marca: fila.marca,
       modelo: fila.modelo,
@@ -83,7 +83,10 @@ export class Motos implements OnInit {
 
   guardar(): void {
     if (!this.formularioValido()) {
-      this.avisar('Completa marca, modelo, cilindraje (1-3000) y año (1900-2100).', true);
+      this.avisar(
+        'Completa marca y modelo; el cilindraje debe estar entre 1 y 3000 y el año entre 1900 y 2100.',
+        true,
+      );
       return;
     }
 
@@ -104,15 +107,18 @@ export class Motos implements OnInit {
   }
 
   eliminar(fila: Moto): void {
-    if (!confirm(`¿Estás seguro de eliminar la moto "${fila.marca} ${fila.modelo}"?`)) {
+    const confirmar = confirm(
+      `¿Estás seguro de eliminar la moto "${fila.marca} ${fila.modelo}"?`,
+    );
+    if (!confirmar) {
       return;
     }
 
     this.cargando.set(true);
-    this.motoService.eliminar(fila.id ?? '').subscribe({
+    this.motoService.eliminar(fila.id).subscribe({
       next: () => {
-        this.avisar('Moto eliminada correctamente');
-        this.refrescar();
+        this.idFiltro = '';
+        this.cargarTodos('Moto eliminada correctamente');
       },
       error: (error: HttpErrorResponse) => {
         this.avisar(this.textoError(error, false), true);
@@ -121,34 +127,30 @@ export class Motos implements OnInit {
     });
   }
 
-  private cargarTodos(): void {
+  private cargarTodos(mensajeExito = ''): void {
     this.cargando.set(true);
     this.motoService.listar().subscribe({
       next: (filas) => {
-        this.filas.set(filas || []);
-        this.avisar(filas && filas.length ? '' : 'No hay registros');
+        this.filas.set(filas);
+        this.avisar(mensajeExito || (filas.length ? '' : 'No hay registros'));
         this.cargando.set(false);
       },
       error: (error: HttpErrorResponse) => {
         this.filas.set([]);
-        this.avisar(this.textoError(error, true), true);
+        const listaVacia = error.status === 404;
+        this.avisar(
+          mensajeExito || (listaVacia ? 'No hay registros' : this.textoError(error, true)),
+          !mensajeExito && !listaVacia,
+        );
         this.cargando.set(false);
       },
     });
   }
 
-  private refrescar(): void {
-    if (this.idFiltro.trim()) {
-      this.buscarPorId();
-      return;
-    }
-    this.cargarTodos();
-  }
-
   private despuesDeGuardar(texto: string): void {
     this.popupAbierto.set(false);
-    this.avisar(texto);
-    this.refrescar();
+    this.idFiltro = '';
+    this.cargarTodos(texto);
   }
 
   private falloGuardar(error: HttpErrorResponse): void {
@@ -160,24 +162,34 @@ export class Motos implements OnInit {
     const datos = this.formulario;
     return Boolean(
       datos.marca?.trim() &&
-      datos.modelo?.trim() &&
-      Number.isInteger(datos.cilindraje) && datos.cilindraje >= 1 && datos.cilindraje <= 3000 &&
-      Number.isInteger(datos.anio) && datos.anio >= 1900 && datos.anio <= 2100
+        datos.marca.length <= 80 &&
+        datos.modelo?.trim() &&
+        datos.modelo.length <= 120 &&
+        Number.isInteger(datos.cilindraje) &&
+        datos.cilindraje >= 1 &&
+        datos.cilindraje <= 3000 &&
+        Number.isInteger(datos.anio) &&
+        datos.anio >= 1900 &&
+        datos.anio <= 2100,
     );
   }
 
   private datosFormulario(): MotoCrear {
-    const datos = this.formulario;
     return {
-      marca: datos.marca.trim(),
-      modelo: datos.modelo.trim(),
-      cilindraje: Number(datos.cilindraje),
-      anio: Number(datos.anio),
+      marca: this.formulario.marca.trim(),
+      modelo: this.formulario.modelo.trim(),
+      cilindraje: Number(this.formulario.cilindraje),
+      anio: Number(this.formulario.anio),
     };
   }
 
   private formularioVacio(): MotoCrear {
-    return { marca: '', modelo: '', cilindraje: 150, anio: new Date().getFullYear() };
+    return {
+      marca: '',
+      modelo: '',
+      cilindraje: 1,
+      anio: new Date().getFullYear(),
+    };
   }
 
   private avisar(texto: string, error = false): void {
@@ -193,7 +205,7 @@ export class Motos implements OnInit {
       return alListar ? 'No hay registros' : 'Moto no encontrada';
     }
     if (error.status === 422) {
-      return 'Revisa los datos. Para filtrar por ID debe ser un UUID válido.';
+      return 'Revisa los datos de la moto y que el ID sea un UUID válido.';
     }
     const detail = error.error?.detail;
     if (typeof detail === 'string') {

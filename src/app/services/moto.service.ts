@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Moto, MotoCrear } from '../models/moto.model';
+import { Moto, MotoActualizar, MotoCrear } from '../models/moto.model';
 
 @Injectable({ providedIn: 'root' })
 export class MotoService {
@@ -22,7 +22,7 @@ export class MotoService {
     return this.http.post<Moto>(this.base, datos);
   }
 
-  actualizar(id: string, datos: MotoCrear): Observable<Moto> {
+  actualizar(id: string, datos: MotoActualizar): Observable<Moto> {
     return this.http.put<Moto>(`${this.base}/${id}`, datos);
   }
 

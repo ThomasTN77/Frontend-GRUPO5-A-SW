@@ -1,5 +1,5 @@
 export interface Moto {
-  id?: string;
+  id: string;
   marca: string;
   modelo: string;
   cilindraje: number;
@@ -7,3 +7,4 @@ export interface Moto {
 }
 
 export type MotoCrear = Omit<Moto, 'id'>;
+export type MotoActualizar = MotoCrear;

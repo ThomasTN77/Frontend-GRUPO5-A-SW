@@ -10,18 +10,17 @@
     />
     <button type="submit" [disabled]="cargando()">Buscar</button>
     <button type="button" class="secundario" (click)="limpiarFiltro()" [disabled]="cargando()">
-      Todos
+      Todas
     </button>
   </form>
 
-  <button type="button" (click)="abrirCrear()">+ Crear</button>
+  <button type="button" (click)="abrirCrear()" [disabled]="cargando()">+ Crear</button>
 </header>
 
 @if (mensaje()) {
   <p class="mensaje" [class.error]="esError()">{{ mensaje() }}</p>
 }
 
-<div class="tabla-scroll">
 <table>
   <thead>
     <tr>
@@ -42,14 +41,15 @@
         <td>{{ fila.cilindraje }} cc</td>
         <td>{{ fila.anio }}</td>
         <td class="acciones">
-          <button type="button" (click)="abrirEditar(fila)">Editar</button>
-          <button type="button" class="peligro" (click)="eliminar(fila)">Eliminar</button>
+          <button type="button" (click)="abrirEditar(fila)" [disabled]="cargando()">Editar</button>
+          <button type="button" class="peligro" (click)="eliminar(fila)" [disabled]="cargando()">
+            Eliminar
+          </button>
         </td>
       </tr>
     }
   </tbody>
 </table>
-</div>
 
 @if (popupAbierto()) {
   <div class="fondo-popup" (click)="cerrarPopup()">
@@ -58,19 +58,47 @@
 
       <label class="campo">
         <span>Marca</span>
-        <input [(ngModel)]="formulario.marca" name="marca" required placeholder="Ej: Honda" />
+        <input
+          [(ngModel)]="formulario.marca"
+          name="marca"
+          required
+          maxlength="80"
+          placeholder="Ej: Yamaha"
+        />
       </label>
       <label class="campo">
         <span>Modelo</span>
-        <input [(ngModel)]="formulario.modelo" name="modelo" required placeholder="Ej: CB 190R" />
+        <input
+          [(ngModel)]="formulario.modelo"
+          name="modelo"
+          required
+          maxlength="120"
+          placeholder="Ej: MT-07"
+        />
       </label>
       <label class="campo">
         <span>Cilindraje (cc)</span>
-        <input [(ngModel)]="formulario.cilindraje" name="cilindraje" type="number" min="1" max="3000" required />
+        <input
+          [(ngModel)]="formulario.cilindraje"
+          name="cilindraje"
+          type="number"
+          min="1"
+          max="3000"
+          step="1"
+          required
+        />
       </label>
       <label class="campo">
         <span>Año</span>
-        <input [(ngModel)]="formulario.anio" name="anio" type="number" min="1900" max="2100" required />
+        <input
+          [(ngModel)]="formulario.anio"
+          name="anio"
+          type="number"
+          min="1900"
+          max="2100"
+          step="1"
+          required
+        />
       </label>
 
       <div class="popup-acciones">
